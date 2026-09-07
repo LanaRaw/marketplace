@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Обрабатывает запросы, связанные с просмотром товаров.
+ */
 @Controller
 @RequestMapping("/products")
 @RequiredArgsConstructor
@@ -22,7 +25,16 @@ public class ProductController {
 
     private final ProductService productService;
 
-    // Список всех товаров с пагинацией и фильтрами
+    /**
+     * Отображает список товаров с поддержкой пагинации и фильтрации.
+     *
+     * @param page номер текущей страницы
+     * @param size количество товаров на странице
+     * @param search поисковый запрос
+     * @param category категория для фильтрации
+     * @param model модель для передачи данных в представление
+     * @return имя шаблона списка товаров
+     */
     @GetMapping
     public String listProducts(
             @RequestParam(defaultValue = "0") int page,
@@ -31,7 +43,6 @@ public class ProductController {
             @RequestParam(required = false) Category category,
             Model model) {
 
-        // Получаем товары с учётом поиска и фильтра
         Page<Product> productPage = productService.searchAndFilter(search, category, page, size);
         List<Category> categories = productService.getAllCategories();
 
@@ -47,7 +58,16 @@ public class ProductController {
         return "product/list";
     }
 
-    // Детальная страница товара
+    /**
+     * Отображает детальную информацию о товаре.
+     *
+     * Если товар не найден или неактивен, выполняется перенаправление
+     * на страницу со списком товаров.
+     *
+     * @param id идентификатор товара
+     * @param model модель для передачи товара в представление
+     * @return имя шаблона страницы товара или перенаправление на список товаров
+     */
     @GetMapping("/{id}")
     public String productDetail(@PathVariable Long id, Model model) {
         Optional<Product> productOpt = productService.getProductById(id);

@@ -7,50 +7,111 @@
 
 <div th:fragment="content">
 
-    <div class="text-center mb-5">
-        <h1 class="display-5">Добро пожаловать на маркетплейс!</h1>
-        <p class="lead mt-3">Лучшие товары от проверенных продавцов</p>
-        <a th:href="@{/products}" class="btn btn-primary mt-3">
-            Смотреть все товары
-        </a>
-    </div>
+    <section class="hero-section">
 
-    <!-- Последние товары -->
-    <h2 class="mb-4">Новинки</h2>
+        <div class="hero-content">
 
-    <div th:if="${latestProducts.isEmpty()}" class="alert alert-info">
-        Товаров пока нет
-    </div>
+            <span class="hero-label">MARKETPLACE</span>
 
-    <div class="row" th:unless="${latestProducts.isEmpty()}">
-        <div class="col-md-4 mb-4" th:each="product : ${latestProducts}">
-            <div class="card h-100 shadow-sm">
-                <img th:src="${product.imageUrl}"
-                     class="card-img-top"
-                     alt=""
-                     style="height: 200px; object-fit: cover;">
-                <div class="card-body d-flex flex-column">
-                    <h5 class="card-title" th:text="${product.name}">Название</h5>
-                    <p class="card-text text-truncate" th:text="${product.description}">Описание</p>
-                    <p class="card-text">
-                        <strong th:text="'$' + ${product.price}">$99.99</strong>
+            <h1 class="hero-title">
+                Всё нужное.
+                <span>В одном месте.</span>
+            </h1>
+
+            <p class="hero-description">
+                Найдите товары от проверенных продавцов
+                и выберите то, что подходит именно вам.
+            </p>
+
+            <div class="hero-actions">
+                <a th:href="@{/products}" class="primary-button">
+                    Смотреть товары
+                    <span>→</span>
+                </a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="products-section">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">DISCOVER</span>
+                <h2 class="section-title">Новинки</h2>
+            </div>
+
+            <a th:href="@{/products}" class="section-link">
+                Все товары
+                <span>→</span>
+            </a>
+
+        </div>
+
+        <div th:if="${latestProducts.isEmpty()}" class="empty-products">
+
+            <h3 class="empty-products-title">
+                Пока здесь ничего нет
+            </h3>
+
+            <p class="empty-products-text">
+                Новые товары появятся совсем скоро.
+            </p>
+
+        </div>
+
+        <div class="products-grid"
+             th:unless="${latestProducts.isEmpty()}">
+
+            <article class="product-card"
+                     th:each="product : ${latestProducts}">
+
+                <a th:href="@{/products/{id}(id=${product.id})}"
+                   class="product-image-wrapper">
+
+                    <img th:src="${product.imageUrl}"
+                         class="product-image"
+                         alt=""
+                         loading="lazy">
+
+                    <span class="product-arrow">↗</span>
+
+                </a>
+
+                <div class="product-card-body">
+
+                    <h3 class="product-name"
+                        th:text="${product.name}">
+                        Название
+                    </h3>
+
+                    <p class="product-description"
+                       th:text="${product.description}">
+                        Описание
                     </p>
-                    <div class="mt-auto">
+
+                    <div class="product-card-footer">
+
+                        <strong class="product-price"
+                                th:text="'$' + ${product.price}">
+                            $99.99
+                        </strong>
+
                         <a th:href="@{/products/{id}(id=${product.id})}"
-                           class="btn btn-primary btn-sm w-100">
+                           class="product-link">
                             Подробнее
                         </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="text-center mt-3">
-        <a th:href="@{/products}" class="btn btn-outline-primary">
-            Все товары &rarr;
-        </a>
-    </div>
+                    </div>
+
+                </div>
+
+            </article>
+
+        </div>
+
+    </section>
 
 </div>
 

@@ -7,38 +7,139 @@
 
 <div th:fragment="content">
 
-    <div class="row">
-        <div class="col-md-5">
-            <img th:src="${product.imageUrl}"
-                 class="img-fluid rounded shadow"
-                 alt="">
-        </div>
+    <div class="product-detail">
 
-        <div class="col-md-7">
-            <h1 th:text="${product.name}">Название</h1>
-            <p class="text-muted" th:text="'Категория: ' + ${product.category}">Категория</p>
+        <div class="product-detail-layout">
 
-            <h3 class="text-success" th:text="'$' + ${product.price}">$99.99</h3>
+            <div class="product-detail-image">
 
-            <p class="mt-3" th:text="${product.description}">Описание</p>
+                <img th:src="${product.imageUrl}"
+                     alt="">
 
-            <p class="mt-2">
-                <strong>В наличии:</strong>
-                <span th:text="${product.quantityInStock}">10</span>
-            </p>
-
-            <div class="mt-4 d-flex gap-2">
-                <form th:action="@{/cart/add}" method="post">
-                    <input type="hidden" name="productId" th:value="${product.id}">
-                    <input type="number" name="quantity" value="1" min="1" max="99"
-                           class="form-control" style="width: 80px; display: inline-block;">
-                    <button type="submit" class="btn btn-success">Добавить в корзину</button>
-                </form>
-
-                <a th:href="@{/products}" class="btn btn-secondary">Назад к товарам</a>
             </div>
+
+            <div class="product-detail-info">
+
+                <div class="product-detail-label">
+                    Product
+                </div>
+
+                <h1 class="product-detail-title"
+                    th:text="${product.name}">
+                    Название
+                </h1>
+
+                <div class="product-category"
+                     th:text="'Категория: ' + ${product.category}">
+                    Категория
+                </div>
+
+                <div class="product-detail-price"
+                     th:text="'$' + ${product.price}">
+                    $99.99
+                </div>
+
+                <p class="product-detail-description"
+                   th:text="${product.description}">
+                    Описание
+                </p>
+
+                <div class="stock-status">
+                    <strong>В наличии:</strong>
+                    <span th:text="${product.quantityInStock}">
+                        10
+                    </span>
+                </div>
+
+                <div class="product-actions">
+
+                    <form th:action="@{/cart/add}"
+                          method="post"
+                          class="cart-form">
+
+                        <input type="hidden"
+                               name="productId"
+                               th:value="${product.id}">
+
+                        <div class="quantity-control">
+
+                            <button type="button"
+                                    class="quantity-button"
+                                    id="quantity-minus"
+                                    aria-label="Уменьшить количество">
+                                −
+                            </button>
+
+                            <input type="number"
+                                   name="quantity"
+                                   value="1"
+                                   min="1"
+                                   max="99"
+                                   class="quantity-input"
+                                   id="quantity-input"
+                                   aria-label="Количество">
+
+                            <button type="button"
+                                    class="quantity-button"
+                                    id="quantity-plus"
+                                    aria-label="Увеличить количество">
+                                +
+                            </button>
+
+                        </div>
+
+                        <button type="submit"
+                                class="primary-button">
+                            Добавить в корзину
+                        </button>
+
+                    </form>
+
+                    <a th:href="@{/products}"
+                       class="back-link">
+                        Назад к товарам
+                    </a>
+
+                </div>
+
+            </div>
+
         </div>
+
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const input = document.getElementById("quantity-input");
+            const minusButton = document.getElementById("quantity-minus");
+            const plusButton = document.getElementById("quantity-plus");
+
+            const min = Number(input.min);
+            const max = Number(input.max);
+
+            minusButton.addEventListener("click", () => {
+                const currentValue = Number(input.value) || min;
+                input.value = Math.max(min, currentValue - 1);
+            });
+
+            plusButton.addEventListener("click", () => {
+                const currentValue = Number(input.value) || min;
+                input.value = Math.min(max, currentValue + 1);
+            });
+
+            input.addEventListener("input", () => {
+                let value = Number(input.value);
+
+                if (!Number.isFinite(value)) {
+                    value = min;
+                }
+
+                value = Math.max(min, Math.min(max, value));
+
+                input.value = value;
+            });
+        });
+    </script>
 
 </div>
 

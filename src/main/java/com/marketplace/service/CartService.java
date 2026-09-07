@@ -11,29 +11,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Управляет товарами в корзине пользователя.
+ */
 @Service
-@SessionScope  // ← Важно! Корзина будет жить в сессии
+@SessionScope
 @RequiredArgsConstructor
 public class CartService {
 
     private final ProductRepository productRepository;
 
-    // Список товаров в корзине (хранится в сессии)
     private List<CartItem> items = new ArrayList<>();
 
-    // Добавить товар в корзину
+    /**
+     * Добавляет товар в корзину или увеличивает его количество.
+     *
+     * @param productId идентификатор товара
+     * @param quantity количество товара
+     */
     public void addItem(Long productId, Integer quantity) {
-        // Проверяем, есть ли уже такой товар в корзине
         Optional<CartItem> existingItem = items.stream()
                 .filter(item -> item.getProductId().equals(productId))
                 .findFirst();
 
         if (existingItem.isPresent()) {
-            // Если есть — увеличиваем количество
             CartItem item = existingItem.get();
             item.setQuantity(item.getQuantity() + quantity);
         } else {
-            // Если нет — создаем новый
             Product product = productRepository.findById(productId)
                     .orElseThrow(() -> new RuntimeException("Товар не найден"));
 
@@ -47,12 +51,21 @@ public class CartService {
         }
     }
 
-    // Удалить товар из корзины
+    /**
+     * Удаляет товар из корзины.
+     *
+     * @param productId идентификатор товара
+     */
     public void removeItem(Long productId) {
         items.removeIf(item -> item.getProductId().equals(productId));
     }
 
-    // Обновить количество товара
+    /**
+     * Обновляет количество товара в корзине.
+     *
+     * @param productId идентификатор товара
+     * @param quantity новое количество
+     */
     public void updateQuantity(Long productId, Integer quantity) {
         items.stream()
                 .filter(item -> item.getProductId().equals(productId))
@@ -60,24 +73,38 @@ public class CartService {
                 .ifPresent(item -> item.setQuantity(quantity));
     }
 
-    // Получить все товары в корзине
+    /**
+     * Возвращает все товары в корзине.
+     *
+     * @return список товаров
+     */
     public List<CartItem> getItems() {
         return items;
     }
 
-    // Очистить корзину
+    /**
+     * Очищает корзину.
+     */
     public void clearCart() {
         items.clear();
     }
 
-    // Получить общую сумму корзины
+    /**
+     * Возвращает общую стоимость товаров в корзине.
+     *
+     * @return общая сумма
+     */
     public Double getTotalAmount() {
         return items.stream()
                 .mapToDouble(CartItem::getTotal)
                 .sum();
     }
 
-    // Получить количество товаров в корзине
+    /**
+     * Возвращает общее количество товаров в корзине.
+     *
+     * @return количество товаров
+     */
     public int getTotalItems() {
         return items.stream()
                 .mapToInt(CartItem::getQuantity)

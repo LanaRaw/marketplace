@@ -1,9 +1,12 @@
 package com.marketplace.model;
 
+/**
+ * Определяет статусы заказа.
+ */
 public enum OrderStatus {
-    CREATED,    // создан
-    PAID,       // оплачен
-    SHIPPED,    // отправлен
-    DELIVERED,  // доставлен
-    CANCELLED   // отменен
+    CREATED,
+    PAID,
+    SHIPPED,
+    DELIVERED,
+    CANCELLED
 }

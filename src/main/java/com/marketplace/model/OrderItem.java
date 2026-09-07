@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 
 import java.math.BigDecimal;
 
+/**
+ * Представляет товар в составе заказа.
+ */
 @Entity
 @Table(name = "order_items")
 @Data
@@ -29,6 +32,9 @@ public class OrderItem {
     @Column(nullable = false)
     private Integer quantity;
 
+    /**
+     * Цена товара на момент покупки.
+     */
     @Column(name = "price_at_purchase", nullable = false, precision = 10, scale = 2)
-    private BigDecimal priceAtPurchase;  // цена на момент покупки (на случай, если товар подорожает позже)
+    private BigDecimal priceAtPurchase;
 }

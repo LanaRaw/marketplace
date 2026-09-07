@@ -7,177 +7,174 @@
 
 <div th:fragment="content">
 
-    <h1 class="mb-4">
-        Корзина
-    </h1>
+    <div class="cart-page">
 
+        <header class="cart-header">
+            <div class="cart-label">Marketplace</div>
 
-    <!-- Корзина пуста -->
-    <div th:if="${items.isEmpty()}">
+            <h1 class="cart-title">
+                Корзина
+            </h1>
+        </header>
 
-        <div class="alert alert-info">
-            Ваша корзина пуста
+        <div th:if="${items.isEmpty()}"
+             class="empty-cart">
+
+            <div class="empty-cart-icon">
+                🛒
+            </div>
+
+            <h2 class="empty-cart-title">
+                Ваша корзина пуста
+            </h2>
+
+            <p class="empty-cart-text">
+                Добавьте товары, чтобы оформить заказ.
+            </p>
+
+            <a th:href="@{/products}"
+               class="primary-button">
+                Перейти к товарам
+            </a>
+
         </div>
 
-        <a th:href="@{/products}"
-           class="btn btn-primary">
+        <div th:unless="${items.isEmpty()}"
+             class="cart-content">
 
-            Перейти к товарам
+            <div class="cart-table-wrapper">
 
-        </a>
+                <table class="table cart-table">
 
-    </div>
+                    <thead>
+                    <tr>
+                        <th>Товар</th>
+                        <th>Цена</th>
+                        <th>Количество</th>
+                        <th>Сумма</th>
+                        <th>Действие</th>
+                    </tr>
+                    </thead>
 
+                    <tbody>
 
-    <!-- Корзина содержит товары -->
-    <div th:unless="${items.isEmpty()}">
+                    <tr th:each="item : ${items}">
 
-        <table class="table table-striped">
+                        <td class="cart-product-name"
+                            th:text="${item.productName}">
+                            Товар
+                        </td>
 
-            <thead>
+                        <td class="cart-price"
+                            th:text="${'$' + item.price}">
+                            $99.99
+                        </td>
 
-            <tr>
-                <th>Товар</th>
-                <th>Цена</th>
-                <th>Количество</th>
-                <th>Сумма</th>
-                <th>Действие</th>
-            </tr>
+                        <td>
 
-            </thead>
+                            <form th:action="@{/cart/update}"
+                                  method="post"
+                                  class="cart-quantity-form">
 
+                                <input type="hidden"
+                                       name="productId"
+                                       th:value="${item.productId}">
 
-            <tbody>
+                                <input type="number"
+                                       name="quantity"
+                                       th:value="${item.quantity}"
+                                       min="1"
+                                       max="99"
+                                       class="form-control cart-quantity-input">
 
-            <tr th:each="item : ${items}">
+                                <button type="submit"
+                                        class="cart-update-button">
+                                    Обновить
+                                </button>
 
-                <td th:text="${item.productName}">
-                    Товар
-                </td>
+                            </form>
 
+                        </td>
 
-                <td th:text="${'$' + item.price}">
-                    $99.99
-                </td>
+                        <td class="cart-price"
+                            th:text="${'$' + item.total}">
+                            $199.98
+                        </td>
 
+                        <td>
 
-                <td>
+                            <form th:action="@{/cart/remove/{id}(id=${item.productId})}"
+                                  method="post">
 
-                    <form
-                            th:action="@{/cart/update}"
-                            method="post"
-                            class="d-flex gap-2">
+                                <button type="submit"
+                                        class="remove-button">
+                                    Удалить
+                                </button>
 
-                        <input
-                                type="hidden"
-                                name="productId"
-                                th:value="${item.productId}">
+                            </form>
 
-                        <input
-                                type="number"
-                                name="quantity"
-                                th:value="${item.quantity}"
-                                min="1"
-                                max="99"
-                                class="form-control"
-                                style="width: 80px;">
+                        </td>
 
-                        <button
-                                type="submit"
-                                class="btn btn-sm btn-primary">
+                    </tr>
 
-                            Обновить
+                    </tbody>
 
-                        </button>
+                    <tfoot>
 
-                    </form>
+                    <tr>
 
-                </td>
+                        <th colspan="3">
+                            Итого:
+                        </th>
 
+                        <th class="cart-total"
+                            th:text="${'$' + total}">
+                            $0.00
+                        </th>
 
-                <td th:text="${'$' + item.total}">
-                    $199.98
-                </td>
+                        <th>
 
+                            <form th:action="@{/cart/clear}"
+                                  method="post">
 
-                <td>
+                                <button type="submit"
+                                        class="clear-button">
+                                    Очистить
+                                </button>
 
-                    <form
-                            th:action="@{/cart/remove/{id}(id=${item.productId})}"
-                            method="post">
+                            </form>
 
-                        <button
-                                type="submit"
-                                class="btn btn-sm btn-danger">
+                        </th>
 
-                            Удалить
+                    </tr>
 
-                        </button>
+                    </tfoot>
 
-                    </form>
+                </table>
 
-                </td>
+            </div>
 
-            </tr>
+            <div class="cart-actions">
 
-            </tbody>
+                <div class="cart-actions-left">
 
+                    <a th:href="@{/products}"
+                       class="secondary-button">
+                        Продолжить покупки
+                    </a>
 
-            <tfoot>
+                </div>
 
-            <tr>
+                <div class="cart-actions-right">
 
-                <th colspan="3">
-                    Итого:
-                </th>
+                    <a th:href="@{/checkout}"
+                       class="primary-button">
+                        Оформить заказ
+                    </a>
 
-                <th th:text="${'$' + total}">
-                    $0.00
-                </th>
+                </div>
 
-                <th>
-
-                    <form
-                            th:action="@{/cart/clear}"
-                            method="post">
-
-                        <button
-                                type="submit"
-                                class="btn btn-sm btn-warning">
-
-                            Очистить
-
-                        </button>
-
-                    </form>
-
-                </th>
-
-            </tr>
-
-            </tfoot>
-
-        </table>
-
-
-        <div class="mt-3">
-
-            <a
-                    th:href="@{/products}"
-                    class="btn btn-secondary">
-
-                Продолжить покупки
-
-            </a>
-
-
-            <a
-                    th:href="@{/checkout}"
-                    class="btn btn-success float-end">
-
-                Оформить заказ
-
-            </a>
+            </div>
 
         </div>
 

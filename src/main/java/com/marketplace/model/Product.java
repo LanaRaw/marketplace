@@ -9,6 +9,9 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+/**
+ * Представляет товар в маркетплейсе.
+ */
 @Entity
 @Table(name = "products")
 @Data
@@ -26,25 +29,37 @@ public class Product {
     @Column(length = 1000)
     private String description;
 
+    /**
+     * Цена товара.
+     */
     @Column(nullable = false, precision = 10, scale = 2)
-    private BigDecimal price;  // используем BigDecimal для денег
+    private BigDecimal price;
 
     @Column(name = "quantity_in_stock", nullable = false)
     private Integer quantityInStock;
 
+    /**
+     * Ссылка на изображение товара.
+     */
     @Column(name = "image_url")
-    private String imageUrl;  // пока просто ссылка на картинку
+    private String imageUrl;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Category category;
 
+    /**
+     * Продавец товара.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "seller_id", nullable = false)
-    private User seller;  // связь с продавцом
+    private User seller;
 
+    /**
+     * Определяет, отображается ли товар.
+     */
     @Column(name = "is_active")
-    private Boolean isActive = true;  // можно скрыть товар
+    private Boolean isActive = true;
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp

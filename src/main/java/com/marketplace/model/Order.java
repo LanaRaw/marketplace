@@ -11,6 +11,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Представляет заказ пользователя в маркетплейсе.
+ */
 @Entity
 @Table(name = "orders")
 @Data
@@ -22,9 +25,12 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    /**
+     * Пользователь, который оформил заказ.
+     */
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", nullable = false)
-    private User buyer;  // кто купил
+    private User buyer;
 
     @Column(name = "order_date", updatable = false)
     @CreationTimestamp

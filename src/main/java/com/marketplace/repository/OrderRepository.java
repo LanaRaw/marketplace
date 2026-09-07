@@ -10,6 +10,11 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
-    // Найти заказы покупателя
+    /**
+     * Находит заказы покупателя, отсортированные по дате от новых к старым.
+     *
+     * @param buyer покупатель
+     * @return список заказов покупателя
+     */
     List<Order> findByBuyerOrderByOrderDateDesc(User buyer);
 }

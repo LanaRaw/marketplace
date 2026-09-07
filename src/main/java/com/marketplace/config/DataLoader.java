@@ -10,6 +10,12 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
+/**
+ * Загружает начальные тестовые данные в базу данных при запуске приложения.
+ *
+ * Создает пользователей с различными ролями и добавляет тестовые товары.
+ * Пароли пользователей шифруются перед сохранением в базу данных.
+ */
 @Component
 @RequiredArgsConstructor
 public class DataLoader implements CommandLineRunner {
@@ -18,15 +24,19 @@ public class DataLoader implements CommandLineRunner {
     private final ProductRepository productRepository;
     private final PasswordEncoder passwordEncoder;
 
+    /**
+     * Загружает тестовые данные, если в базе данных отсутствуют пользователи.
+     *
+     * @param args аргументы командной строки
+     */
     @Override
     public void run(String... args) {
         if (userRepository.count() == 0) {
 
-            // Создаем пользователей с зашифрованными паролями
             User admin = new User();
             admin.setUsername("admin");
             admin.setEmail("admin@marketplace.com");
-            admin.setPassword(passwordEncoder.encode("admin123"));  // ← ЗАШИФРОВАНО!
+            admin.setPassword(passwordEncoder.encode("admin123"));
             admin.setRole(Role.ADMIN);
             admin.setIsActive(true);
             userRepository.save(admin);
@@ -34,7 +44,7 @@ public class DataLoader implements CommandLineRunner {
             User seller = new User();
             seller.setUsername("seller");
             seller.setEmail("seller@marketplace.com");
-            seller.setPassword(passwordEncoder.encode("seller123"));  // ← ЗАШИФРОВАНО!
+            seller.setPassword(passwordEncoder.encode("seller123"));
             seller.setRole(Role.SELLER);
             seller.setIsActive(true);
             userRepository.save(seller);
@@ -42,12 +52,11 @@ public class DataLoader implements CommandLineRunner {
             User buyer = new User();
             buyer.setUsername("buyer");
             buyer.setEmail("buyer@marketplace.com");
-            buyer.setPassword(passwordEncoder.encode("buyer123"));  // ← ЗАШИФРОВАНО!
+            buyer.setPassword(passwordEncoder.encode("buyer123"));
             buyer.setRole(Role.BUYER);
             buyer.setIsActive(true);
             userRepository.save(buyer);
 
-            // Товары (без изменений)
             Product product1 = new Product();
             product1.setName("iPhone 15 Pro");
             product1.setDescription("Новейший смартфон от Apple с титановым корпусом");
@@ -81,10 +90,10 @@ public class DataLoader implements CommandLineRunner {
             product3.setIsActive(true);
             productRepository.save(product3);
 
-            System.out.println("✅ Тестовые данные загружены с зашифрованными паролями!");
-            System.out.println("👤 Админ: admin@marketplace.com / admin123");
-            System.out.println("🛒 Продавец: seller@marketplace.com / seller123");
-            System.out.println("🛍️ Покупатель: buyer@marketplace.com / buyer123");
+            System.out.println("Тестовые данные загружены с зашифрованными паролями!");
+            System.out.println("Админ: admin@marketplace.com / admin123");
+            System.out.println("Продавец: seller@marketplace.com / seller123");
+            System.out.println("Покупатель: buyer@marketplace.com / buyer123");
         }
     }
 }

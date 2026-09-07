@@ -8,6 +8,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
+/**
+ * Представляет пользователя маркетплейса.
+ */
 @Entity
 @Table(name = "users")
 @Data
@@ -25,17 +28,26 @@ public class User {
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
+    /**
+     * Зашифрованный пароль пользователя.
+     */
     @Column(nullable = false)
-    private String password;  // будет хранить зашифрованный пароль
+    private String password;
 
+    /**
+     * Роль пользователя.
+     */
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private Role role;  // ADMIN, SELLER, BUYER
+    private Role role;
 
     @Column(name = "created_at", updatable = false)
     @CreationTimestamp
     private LocalDateTime createdAt;
 
+    /**
+     * Определяет, активен ли пользователь.
+     */
     @Column(name = "is_active")
-    private Boolean isActive = true;  // для бана/деактивации
+    private Boolean isActive = true;
 }

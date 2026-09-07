@@ -1,7 +1,6 @@
 package com.marketplace.service;
 
 import com.marketplace.model.User;
-import com.marketplace.model.Role;
 import com.marketplace.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,18 +11,27 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+/**
+ * Загружает данные пользователя для Spring Security.
+ */
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Находит пользователя по email и формирует его данные для авторизации.
+     *
+     * @param email email пользователя
+     * @return данные пользователя для Spring Security
+     * @throws UsernameNotFoundException если пользователь не найден или заблокирован
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Пользователь не найден с email: " + email));
 
-        // Если пользователь забанен
         if (!user.getIsActive()) {
             throw new UsernameNotFoundException("Пользователь заблокирован");
         }

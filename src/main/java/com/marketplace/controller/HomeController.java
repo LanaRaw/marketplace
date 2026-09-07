@@ -11,15 +11,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
 
+/**
+ * Обрабатывает запросы главной страницы приложения.
+ */
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
 
     private final ProductRepository productRepository;
 
+    /**
+     * Отображает главную страницу и загружает последние активные товары.
+     *
+     * @param model модель для передачи товаров в представление
+     * @return имя шаблона главной страницы
+     */
     @GetMapping("/")
     public String home(Model model) {
-        // Показываем последние 6 товаров на главной
         List<Product> latestProducts = productRepository.findByIsActiveTrue(
                 PageRequest.of(0, 6, Sort.by("createdAt").descending())
         ).getContent();

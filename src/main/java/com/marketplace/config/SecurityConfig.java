@@ -14,6 +14,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Настраивает безопасность приложения и правила доступа к ресурсам.
+ *
+ * Определяет доступ для разных ролей, настройку формы входа,
+ * выхода из системы и компоненты для аутентификации пользователей.
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -21,10 +27,17 @@ public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
 
+    /**
+     * Настраивает цепочку фильтров безопасности Spring Security.
+     *
+     * @param http объект для настройки безопасности HTTP-запросов
+     * @return настроенная цепочка фильтров безопасности
+     * @throws Exception если возникает ошибка при настройке безопасности
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Временно отключаем для теста кнопок
+                .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/products/**", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/seller/**").hasAuthority("SELLER")
@@ -47,11 +60,21 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Создает кодировщик паролей на основе BCrypt.
+     *
+     * @return кодировщик паролей
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Настраивает провайдер аутентификации пользователей.
+     *
+     * @return провайдер аутентификации
+     */
     @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider(userDetailsService);
@@ -59,6 +82,13 @@ public class SecurityConfig {
         return provider;
     }
 
+    /**
+     * Создает менеджер аутентификации Spring Security.
+     *
+     * @param authConfig конфигурация аутентификации Spring Security
+     * @return менеджер аутентификации
+     * @throws Exception если менеджер аутентификации не может быть создан
+     */
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
         return authConfig.getAuthenticationManager();
