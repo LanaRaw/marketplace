@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:fragment="layout(content)">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title th:text="${title} ?: 'Маркетплейс'">
+        Маркетплейс
+    </title>
+
+    <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+            rel="stylesheet">
+</head>
+
+<body>
+
+<!-- ШАПКА -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+
+        <a class="navbar-brand" th:href="@{/}">
+            Маркетплейс
+        </a>
+
+        <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+                aria-controls="navbarNav"
+                aria-expanded="false"
+                aria-label="Переключить навигацию">
+
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav ms-auto">
+
+                <!-- Авторизованный пользователь -->
+                <li class="nav-item"
+                    th:if="${#authorization.expression('isAuthenticated()')}">
+
+                    <span class="nav-link">
+                        Привет,
+                        <span th:text="${#authentication.name}">user</span>
+                    </span>
+                </li>
+
+                <li class="nav-item"
+                    th:if="${#authorization.expression('isAuthenticated()')}">
+
+                    <a class="nav-link" th:href="@{/cart}">
+                        Корзина
+                    </a>
+                </li>
+
+                <li class="nav-item"
+                    th:if="${#authorization.expression('isAuthenticated()')}">
+
+                    <a class="nav-link" th:href="@{/logout}">
+                        Выход
+                    </a>
+                </li>
+
+                <!-- Неавторизованный пользователь -->
+                <li class="nav-item"
+                    th:unless="${#authorization.expression('isAuthenticated()')}">
+
+                    <a class="nav-link" th:href="@{/login}">
+                        Вход
+                    </a>
+                </li>
+
+                <li class="nav-item"
+                    th:unless="${#authorization.expression('isAuthenticated()')}">
+
+                    <a class="nav-link" th:href="@{/register}">
+                        Регистрация
+                    </a>
+                </li>
+
+            </ul>
+
+        </div>
+    </div>
+</nav>
+
+
+<!-- ОСНОВНОЙ КОНТЕНТ -->
+<main class="container mt-4" th:replace="${content}">
+</main>
+
+
+<script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
+</script>
+
+</body>
+</html>

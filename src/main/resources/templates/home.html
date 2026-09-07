@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <div class="text-center">
+
+        <h1 class="display-5">
+            Добро пожаловать на маркетплейс!
+        </h1>
+
+        <p class="lead mt-3">
+            Здесь скоро будут товары
+        </p>
+
+        <a th:href="@{/products}"
+           class="btn btn-primary mt-3">
+            Перейти к товарам
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

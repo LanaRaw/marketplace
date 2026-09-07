@@ -1,0 +1,50 @@
+# IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.settings/
+.classpath
+.project
+.factorypath
+
+# Maven
+target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Spring Boot
+application-local.properties
+application-dev.properties
+
+# Logs
+logs/
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Lombok
+*.class
+
+# Database
+*.db
+*.sqlite
+
+# Frontend
+node_modules/
+dist/
+build/
+
+# Environment
+.env
+application-secret.properties

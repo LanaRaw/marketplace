@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <div class="row justify-content-center">
+
+        <div class="col-md-6">
+
+            <div class="card shadow">
+
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        Вход в систему
+                    </h4>
+                </div>
+
+                <div class="card-body">
+
+                    <div th:if="${param.error}"
+                         class="alert alert-danger">
+                        Неверный email или пароль
+                    </div>
+
+                    <div th:if="${param.registered}"
+                         class="alert alert-success">
+                        Регистрация успешна! Войдите в систему.
+                    </div>
+
+                    <div th:if="${param.logout}"
+                         class="alert alert-info">
+                        Вы вышли из системы
+                    </div>
+
+
+                    <form th:action="@{/login}" method="post">
+
+                        <div class="mb-3">
+
+                            <label for="username"
+                                   class="form-label">
+                                Email
+                            </label>
+
+                            <input
+                                    type="email"
+                                    class="form-control"
+                                    id="username"
+                                    name="username"
+                                    required>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label for="password"
+                                   class="form-label">
+                                Пароль
+                            </label>
+
+                            <input
+                                    type="password"
+                                    class="form-control"
+                                    id="password"
+                                    name="password"
+                                    required>
+
+                        </div>
+
+
+                        <button
+                                type="submit"
+                                class="btn btn-primary w-100">
+
+                            Войти
+
+                        </button>
+
+                    </form>
+
+
+                    <div class="mt-3 text-center">
+
+                        <p>
+                            Нет аккаунта?
+
+                            <a th:href="@{/register}">
+                                Зарегистрироваться
+                            </a>
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
