@@ -7,21 +7,49 @@
 
 <div th:fragment="content">
 
-    <div class="text-center">
-
-        <h1 class="display-5">
-            Добро пожаловать на маркетплейс!
-        </h1>
-
-        <p class="lead mt-3">
-            Здесь скоро будут товары
-        </p>
-
-        <a th:href="@{/products}"
-           class="btn btn-primary mt-3">
-            Перейти к товарам
+    <div class="text-center mb-5">
+        <h1 class="display-5">Добро пожаловать на маркетплейс!</h1>
+        <p class="lead mt-3">Лучшие товары от проверенных продавцов</p>
+        <a th:href="@{/products}" class="btn btn-primary mt-3">
+            Смотреть все товары
         </a>
+    </div>
 
+    <!-- Последние товары -->
+    <h2 class="mb-4">Новинки</h2>
+
+    <div th:if="${latestProducts.isEmpty()}" class="alert alert-info">
+        Товаров пока нет
+    </div>
+
+    <div class="row" th:unless="${latestProducts.isEmpty()}">
+        <div class="col-md-4 mb-4" th:each="product : ${latestProducts}">
+            <div class="card h-100 shadow-sm">
+                <img th:src="${product.imageUrl}"
+                     class="card-img-top"
+                     alt=""
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="${product.name}">Название</h5>
+                    <p class="card-text text-truncate" th:text="${product.description}">Описание</p>
+                    <p class="card-text">
+                        <strong th:text="'$' + ${product.price}">$99.99</strong>
+                    </p>
+                    <div class="mt-auto">
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn btn-primary btn-sm w-100">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-center mt-3">
+        <a th:href="@{/products}" class="btn btn-outline-primary">
+            Все товары &rarr;
+        </a>
     </div>
 
 </div>

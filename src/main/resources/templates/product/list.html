@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <h1 class="mb-4">Все товары</h1>
+
+    <!-- Форма поиска и фильтра -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <form th:action="@{/products}" method="get" class="d-flex">
+                <input type="text"
+                       name="search"
+                       class="form-control me-2"
+                       placeholder="Поиск товаров..."
+                       th:value="${search}">
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </form>
+        </div>
+        <div class="col-md-4">
+            <form th:action="@{/products}" method="get" class="d-flex">
+                <select name="category" class="form-select me-2">
+                    <option value="">Все категории</option>
+                    <option th:each="cat : ${categories}"
+                            th:value="${cat}"
+                            th:text="${cat}"
+                            th:selected="${selectedCategory == cat}">
+                    </option>
+                </select>
+                <button type="submit" class="btn btn-secondary">Фильтр</button>
+            </form>
+        </div>
+        <div class="col-md-2 text-end">
+            <a th:href="@{/products}" class="btn btn-outline-secondary">Сбросить</a>
+        </div>
+    </div>
+
+    <!-- Карточки товаров -->
+    <div th:if="${products.isEmpty()}" class="alert alert-info">
+        Товаров не найдено
+    </div>
+
+    <div class="row" th:unless="${products.isEmpty()}">
+        <div class="col-md-3 mb-4" th:each="product : ${products}">
+            <div class="card h-100 shadow-sm">
+                <img th:src="${product.imageUrl}"
+                     class="card-img-top"
+                     alt=""
+                     style="height: 200px; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title" th:text="${product.name}">Название</h5>
+                    <p class="card-text text-truncate" th:text="${product.description}">Описание</p>
+                    <p class="card-text">
+                        <strong th:text="'$' + ${product.price}">$99.99</strong>
+                    </p>
+                    <div class="mt-auto">
+                        <a th:href="@{/products/{id}(id=${product.id})}"
+                           class="btn btn-primary btn-sm w-100">
+                            Подробнее
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Пагинация -->
+    <nav th:if="${totalPages > 1}" aria-label="Навигация по страницам">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                <a class="page-link"
+                   th:href="@{/products(page=${currentPage - 1}, size=${size}, search=${search}, category=${selectedCategory})}"
+                   aria-label="Предыдущая">
+                    &laquo;
+                </a>
+            </li>
+
+            <li class="page-item"
+                th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                th:classappend="${i == currentPage} ? 'active' : ''">
+                <a class="page-link"
+                   th:href="@{/products(page=${i}, size=${size}, search=${search}, category=${selectedCategory})}"
+                   th:text="${i + 1}">
+                </a>
+            </li>
+
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link"
+                   th:href="@{/products(page=${currentPage + 1}, size=${size}, search=${search}, category=${selectedCategory})}"
+                   aria-label="Следующая">
+                    &raquo;
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+</div>
+
+</body>
+</html>
