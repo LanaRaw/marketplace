@@ -18,6 +18,8 @@
 * Просмотр товаров с пагинацией
 * Поиск товаров
 * Фильтрация по категориям
+* Детальная страница товара
+* Главная страница с последними товарами
 * Корзина — в разработке
 
 ## Запуск
@@ -26,19 +28,25 @@
 
 Создайте базу данных `marketplace` в PostgreSQL.
 
-### 2. Запустить приложение
+### 2. Настроить подключение
 
+В файле `application.yml` укажите свои данные:
+```
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/marketplace
+    username: postgres
+    password: ваш_пароль
+```
+### 3. Запустить приложение
 Запустите класс:
-
-```text
+```
 MarketplaceApplication.java
 ```
 
-### 3. Открыть приложение
-
+### 4. Открыть приложение
 Перейдите в браузере:
-
-```text
+```
 http://localhost:8080
 ```
 
@@ -50,6 +58,32 @@ http://localhost:8080
 | Seller | `seller@marketplace.com` | `seller123` |
 | Buyer  | `buyer@marketplace.com`  | `buyer123`  |
 
+## Структура проекта
+```
+src/
+├── main/
+│   ├── java/com/marketplace/
+│   │   ├── config/         # Конфигурации (Security, DataLoader)
+│   │   ├── controller/     # Контроллеры
+│   │   ├── model/          # Сущности (User, Product, Order...)
+│   │   ├── repository/     # Репозитории JPA
+│   │   └── service/        # Сервисы
+│   └── resources/
+│       ├── static/         # CSS, JS, картинки
+│       └── templates/      # HTML-шаблоны (Thymeleaf)
+└── pom.xml
+```
+
 ## Статус проекта
 
-В разработке.
+Спринт 0: Настройка проекта — ✅
+
+Спринт 1: Модели данных — ✅
+
+Спринт 2: Безопасность — ✅
+
+Спринт 3: Витрина — ✅
+
+Спринт 3.5: Рефакторинг — ✅
+
+Спринт 4: Корзина — ⏳ в разработке
