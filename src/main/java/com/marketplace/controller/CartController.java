@@ -35,6 +35,17 @@ public class CartController {
     }
 
     /**
+     * Возвращает количество товаров в корзине (для AJAX-обновления бейджа).
+     *
+     * @return количество товаров
+     */
+    @GetMapping("/count")
+    @ResponseBody
+    public int getCartCount() {
+        return cartService.getTotalItems();
+    }
+
+    /**
      * Добавляет товар в корзину.
      *
      * @param productId идентификатор товара

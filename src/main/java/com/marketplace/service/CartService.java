@@ -67,10 +67,23 @@ public class CartService {
      * @param quantity новое количество
      */
     public void updateQuantity(Long productId, Integer quantity) {
-        items.stream()
-                .filter(item -> item.getProductId().equals(productId))
-                .findFirst()
-                .ifPresent(item -> item.setQuantity(quantity));
+        boolean found = false;
+
+        for (CartItem item : items) {
+            if (item.getProductId().equals(productId)) {
+                if (quantity <= 0) {
+                    items.remove(item);
+                } else {
+                    item.setQuantity(quantity);
+                }
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("⚠️ Товар с id " + productId + " не найден в корзине");
+        }
     }
 
     /**

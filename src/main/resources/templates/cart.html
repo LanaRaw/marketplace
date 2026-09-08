@@ -58,7 +58,9 @@
 
                     <tbody>
 
-                    <tr th:each="item : ${items}">
+                    <tr th:each="item : ${items}"
+                        class="cart-row"
+                        th:attr="data-price=${item.price}">
 
                         <td class="cart-product-name"
                             th:text="${item.productName}">
@@ -80,15 +82,35 @@
                                        name="productId"
                                        th:value="${item.productId}">
 
-                                <input type="number"
-                                       name="quantity"
-                                       th:value="${item.quantity}"
-                                       min="1"
-                                       max="99"
-                                       class="form-control cart-quantity-input">
+                                <div class="cart-quantity-control">
+
+                                    <button type="button"
+                                            class="cart-quantity-button"
+                                            data-change="decrease"
+                                            aria-label="Уменьшить количество">
+                                        −
+                                    </button>
+
+                                    <input type="number"
+                                           name="quantity"
+                                           th:value="${item.quantity}"
+                                           min="1"
+                                           max="99"
+                                           class="cart-quantity-input"
+                                           aria-label="Количество товара">
+
+                                    <button type="button"
+                                            class="cart-quantity-button"
+                                            data-change="increase"
+                                            aria-label="Увеличить количество">
+                                        +
+                                    </button>
+
+                                </div>
 
                                 <button type="submit"
-                                        class="cart-update-button">
+                                        class="cart-update-button"
+                                        style="display: none;">
                                     Обновить
                                 </button>
 
@@ -96,7 +118,7 @@
 
                         </td>
 
-                        <td class="cart-price"
+                        <td class="cart-price cart-item-total"
                             th:text="${'$' + item.total}">
                             $199.98
                         </td>
@@ -179,6 +201,157 @@
         </div>
 
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+
+            const cartRows = document.querySelectorAll('.cart-row');
+            const cartTotal = document.querySelector('.cart-total');
+            const cartBadge = document.querySelector('.cart-badge');
+
+            const updateCartTotal = function () {
+
+                let total = 0;
+                let totalItems = 0;
+
+                cartRows.forEach(function (row) {
+
+                    const price = Number(row.dataset.price) || 0;
+                    const input = row.querySelector('.cart-quantity-input');
+                    const itemTotal = row.querySelector('.cart-item-total');
+
+                    if (!input) {
+                        return;
+                    }
+
+                    const quantity = Number(input.value) || 1;
+                    const rowTotal = price * quantity;
+
+                    total += rowTotal;
+                    totalItems += quantity;
+
+                    if (itemTotal) {
+                        itemTotal.textContent = '$' + rowTotal.toFixed(2);
+                    }
+                });
+
+                if (cartTotal) {
+                    cartTotal.textContent = '$' + total.toFixed(2);
+                }
+
+                if (cartBadge) {
+                    cartBadge.textContent = totalItems;
+                }
+            };
+
+            const saveQuantity = function (form) {
+
+                const formData = new FormData(form);
+
+                fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'same-origin'
+                })
+                    .then(function (response) {
+
+                        if (!response.ok) {
+                            throw new Error('Не удалось обновить корзину');
+                        }
+
+                    })
+                    .catch(function () {
+                        window.location.reload();
+                    });
+            };
+
+            const updateInput = function (input) {
+
+                const min = Number(input.min) || 1;
+                const max = Number(input.max) || 99;
+
+                let value = Number(input.value);
+
+                if (!Number.isFinite(value)) {
+                    value = min;
+                }
+
+                value = Math.min(max, Math.max(min, Math.floor(value)));
+
+                input.value = value;
+
+                updateCartTotal();
+            };
+
+            document.addEventListener('click', function (event) {
+
+                const button = event.target.closest('.cart-quantity-button');
+
+                if (!button) {
+                    return;
+                }
+
+                const form = button.closest('.cart-quantity-form');
+
+                if (!form) {
+                    return;
+                }
+
+                const input = form.querySelector('.cart-quantity-input');
+
+                if (!input) {
+                    return;
+                }
+
+                const currentValue = Number(input.value) || 1;
+                const min = Number(input.min) || 1;
+                const max = Number(input.max) || 99;
+
+                const change =
+                    button.dataset.change === 'increase'
+                        ? 1
+                        : -1;
+
+                const newValue = Math.min(
+                    max,
+                    Math.max(min, currentValue + change)
+                );
+
+                input.value = newValue;
+
+                updateCartTotal();
+                saveQuantity(form);
+            });
+
+            document.addEventListener('input', function (event) {
+
+                if (!event.target.classList.contains('cart-quantity-input')) {
+                    return;
+                }
+
+                updateInput(event.target);
+            });
+
+            document.addEventListener('change', function (event) {
+
+                if (!event.target.classList.contains('cart-quantity-input')) {
+                    return;
+                }
+
+                const input = event.target;
+                const form = input.closest('.cart-quantity-form');
+
+                updateInput(input);
+
+                if (form) {
+                    saveQuantity(form);
+                }
+            });
+
+            updateCartTotal();
+
+        });
+    </script>
 
 </div>
 

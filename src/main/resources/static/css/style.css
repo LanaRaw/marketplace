@@ -172,6 +172,22 @@ textarea {
     background: var(--accent-hover) !important;
 }
 
+.cart-badge {
+    color: #ffffff !important;
+    background: var(--accent) !important;
+
+    font-size: 0.65rem;
+    font-weight: 700;
+
+    border: 1px solid rgba(255, 255, 255, 0.12);
+
+    box-shadow: 0 4px 12px rgba(49, 90, 138, 0.22);
+}
+
+.cart-badge:hover {
+    background: var(--accent-hover) !important;
+}
+
 .site-navbar .navbar-toggler {
     padding: 7px 9px;
 
@@ -350,6 +366,8 @@ textarea {
 
     font-size: 0.84rem;
     font-weight: 600;
+
+    cursor: pointer;
 
     transition:
             background-color var(--transition),
@@ -610,6 +628,7 @@ textarea {
     gap: 12px;
 
     margin-top: auto;
+    margin-bottom: 10px;
 }
 
 .product-price {
@@ -619,7 +638,13 @@ textarea {
     font-weight: 700;
 
     white-space: nowrap;
+    margin-bottom: 10px;
 }
+
+
+/* =========================================================
+   PRODUCT LINKS
+   ========================================================= */
 
 .product-link {
     display: inline-flex;
@@ -627,6 +652,7 @@ textarea {
     justify-content: center;
 
     min-height: 38px;
+    height: 38px;
 
     padding: 0 13px;
 
@@ -639,10 +665,13 @@ textarea {
     font-size: 0.76rem;
     font-weight: 600;
 
+    white-space: nowrap;
+
     transition:
             color var(--transition),
             background-color var(--transition),
-            border-color var(--transition);
+            border-color var(--transition),
+            transform var(--transition);
 }
 
 .product-link:hover {
@@ -650,6 +679,47 @@ textarea {
 
     background: var(--accent);
     border-color: var(--accent);
+}
+
+.product-link:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   HOME PRODUCT ACTIONS
+   ========================================================= */
+
+.product-card-actions {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+
+    width: 100%;
+}
+
+.product-card-actions .home-cart-form {
+    display: flex;
+    flex: 1;
+
+    min-width: 0;
+}
+
+.product-card-actions .home-cart-button {
+    width: 100%;
+}
+
+.home-cart-button {
+    min-height: 38px;
+    height: 38px;
+
+    padding: 0 14px;
+
+    font-size: 0.76rem;
+}
+
+.home-cart-button span {
+    font-size: 0.9rem;
 }
 
 
@@ -812,6 +882,11 @@ textarea {
     gap: 14px;
 }
 
+
+/* =========================================================
+   CART FORM / PRODUCT DETAIL
+   ========================================================= */
+
 .cart-form {
     display: flex;
     align-items: stretch;
@@ -821,11 +896,21 @@ textarea {
     max-width: 460px;
 }
 
+.cart-form .primary-button {
+    flex: 1;
+}
+
+
+/* =========================================================
+   QUANTITY CONTROL — PRODUCT DETAIL
+   ========================================================= */
+
 .quantity-control {
     display: flex;
     align-items: stretch;
 
     width: 128px;
+    min-width: 128px;
     min-height: 46px;
 
     background: rgba(255, 255, 255, 0.035);
@@ -837,7 +922,8 @@ textarea {
 
     transition:
             border-color var(--transition),
-            background-color var(--transition);
+            background-color var(--transition),
+            box-shadow var(--transition);
 }
 
 .quantity-control:focus-within {
@@ -886,6 +972,7 @@ textarea {
 
 .quantity-input {
     width: 48px;
+    min-width: 48px;
     min-height: 44px;
 
     padding: 0;
@@ -928,9 +1015,10 @@ textarea {
     -moz-appearance: textfield;
 }
 
-.cart-form .primary-button {
-    flex: 1;
-}
+
+/* =========================================================
+   BACK LINK
+   ========================================================= */
 
 .back-link {
     display: inline-flex;
@@ -1345,6 +1433,8 @@ textarea {
     font-size: 0.88rem;
     font-weight: 600;
 
+    cursor: pointer;
+
     transition:
             background-color var(--transition),
             transform var(--transition),
@@ -1656,23 +1746,20 @@ textarea {
     min-width: 190px;
 }
 
-.cart-quantity-input {
-    width: 70px;
+.cart-quantity-control {
+    display: flex;
+    align-items: stretch;
+
+    width: 128px;
+    min-width: 128px;
     min-height: 38px;
 
-    padding: 0 10px;
+    background: rgba(255, 255, 255, 0.035);
 
-    color: var(--text-primary) !important;
-    background: rgba(255, 255, 255, 0.035) !important;
+    border: 1px solid var(--border);
+    border-radius: 10px;
 
-    border: 1px solid var(--border) !important;
-    border-radius: 9px;
-
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-align: center;
-
-    box-shadow: none !important;
+    overflow: hidden;
 
     transition:
             border-color var(--transition),
@@ -1680,26 +1767,92 @@ textarea {
             box-shadow var(--transition);
 }
 
-.cart-quantity-input:focus {
-    color: var(--text-primary) !important;
-    background: rgba(255, 255, 255, 0.055) !important;
+.cart-quantity-control:focus-within {
+    background: rgba(255, 255, 255, 0.055);
 
-    border-color: rgba(49, 90, 138, 0.6) !important;
+    border-color: rgba(49, 90, 138, 0.6);
 
     box-shadow:
-            0 0 0 3px rgba(49, 90, 138, 0.08) !important;
+            0 0 0 3px rgba(49, 90, 138, 0.08);
+}
+
+.cart-quantity-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 40px;
+    min-width: 40px;
+
+    padding: 0;
+
+    color: var(--text-secondary);
+    background: transparent;
+
+    border: 0;
+
+    font-size: 1.15rem;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+
+    transition:
+            color var(--transition),
+            background-color var(--transition);
+}
+
+.cart-quantity-button:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.055);
+}
+
+.cart-quantity-button:active {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.cart-quantity-control .cart-quantity-input {
+    width: 48px;
+    min-width: 48px;
+    min-height: 36px;
+
+    padding: 0;
+
+    color: var(--text-primary) !important;
+    background: transparent !important;
+
+    border: 0 !important;
+    border-radius: 0;
+
+    font-family: "DM Sans", sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    text-align: center;
+
+    box-shadow: none !important;
 
     outline: none;
 }
 
-.cart-quantity-input::-webkit-outer-spin-button,
-.cart-quantity-input::-webkit-inner-spin-button {
+.cart-quantity-control .cart-quantity-input:focus {
+    color: var(--text-primary) !important;
+    background: transparent !important;
+
+    border: 0 !important;
+
+    box-shadow: none !important;
+
+    outline: none;
+}
+
+.cart-quantity-control .cart-quantity-input::-webkit-outer-spin-button,
+.cart-quantity-control .cart-quantity-input::-webkit-inner-spin-button {
     margin: 0;
 
     -webkit-appearance: none;
 }
 
-.cart-quantity-input[type="number"] {
+.cart-quantity-control .cart-quantity-input[type="number"] {
     -moz-appearance: textfield;
 }
 
@@ -1918,7 +2071,7 @@ textarea {
 
 
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE — TABLET
    ========================================================= */
 
 @media (max-width: 991px) {
@@ -1975,6 +2128,10 @@ textarea {
 }
 
 
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
 @media (max-width: 767px) {
 
     .hero-section {
@@ -2027,11 +2184,11 @@ textarea {
     }
 
     .product-card-footer {
-        align-items: flex-start;
+        align-items: stretch;
         flex-direction: column;
     }
 
-    .product-link {
+    .product-card-actions {
         width: 100%;
     }
 
@@ -2122,6 +2279,10 @@ textarea {
 }
 
 
+/* =========================================================
+   RESPONSIVE — SMALL MOBILE
+   ========================================================= */
+
 @media (max-width: 520px) {
 
     .section-header {
@@ -2144,12 +2305,21 @@ textarea {
     }
 
     .product-card-footer {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .product-card-actions {
         flex-direction: row;
-        align-items: center;
     }
 
     .product-link {
         width: auto;
+        flex: 1;
+    }
+
+    .product-card-actions .home-cart-form {
+        flex: 1;
     }
 
     .product-detail-layout {
@@ -2206,5 +2376,63 @@ textarea {
 
     .empty-cart-title {
         font-size: 1.5rem;
+    }
+}
+
+
+/* =========================================================
+   CART FORM — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .cart-form {
+        gap: 8px;
+    }
+
+    .quantity-control {
+        width: 104px;
+        min-width: 104px;
+    }
+
+    .quantity-button {
+        width: 32px;
+        min-width: 32px;
+    }
+
+    .quantity-input {
+        width: 40px;
+        min-width: 40px;
+    }
+
+    .cart-form .primary-button {
+        padding: 0 12px;
+    }
+}
+
+
+/* =========================================================
+   CART QUANTITY — SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .cart-quantity-form {
+        min-width: 190px;
+    }
+
+    .cart-quantity-control {
+        width: 104px;
+        min-width: 104px;
+    }
+
+    .cart-quantity-button {
+        width: 32px;
+        min-width: 32px;
+    }
+
+    .cart-quantity-control .cart-quantity-input {
+        width: 40px;
+        min-width: 40px;
     }
 }

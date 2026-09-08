@@ -125,6 +125,48 @@
                         $99.99
                     </div>
 
+                    <form th:action="@{/cart/add}"
+                          method="post"
+                          class="cart-form">
+
+                        <input type="hidden"
+                               name="productId"
+                               th:value="${product.id}">
+
+                        <div class="quantity-control">
+
+                            <button type="button"
+                                    class="quantity-button"
+                                    onclick="this.nextElementSibling.stepDown()"
+                                    aria-label="Уменьшить количество">
+                                −
+                            </button>
+
+                            <input type="number"
+                                   name="quantity"
+                                   value="1"
+                                   min="1"
+                                   max="99"
+                                   class="quantity-input"
+                                   aria-label="Количество">
+
+                            <button type="button"
+                                    class="quantity-button"
+                                    onclick="this.previousElementSibling.stepUp()"
+                                    aria-label="Увеличить количество">
+                                +
+                            </button>
+
+                        </div>
+
+                        <button type="submit"
+                                class="primary-button cart-button">
+                            В корзину
+                            <span>→</span>
+                        </button>
+
+                    </form>
+
                     <a th:href="@{/products/{id}(id=${product.id})}"
                        class="product-link">
                         Подробнее
