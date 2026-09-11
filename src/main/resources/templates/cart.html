@@ -64,13 +64,15 @@
                         class="cart-row"
                         th:attr="data-price=${item.price}">
 
-                        <td class="cart-product-name"
-                            th:text="${item.productName}">
-                            Товар
+                        <td class="cart-product-name">
+                            <a th:href="@{/products/{id}(id=${item.productId})}"
+                               th:text="${item.productName}">
+                                Товар
+                            </a>
                         </td>
 
                         <td class="cart-price"
-                            th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}">
+                            th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 'COMMA', 2, 'POINT')}">
                             $99.99
                         </td>
 
@@ -121,7 +123,7 @@
                         </td>
 
                         <td class="cart-price cart-item-total"
-                            th:text="'$' + ${#numbers.formatDecimal(item.total, 1, 2)}">
+                            th:text="'$' + ${#numbers.formatDecimal(item.total, 1, 'COMMA', 2, 'POINT')}">
                             $199.98
                         </td>
 
@@ -152,7 +154,7 @@
                         </th>
 
                         <th class="cart-total"
-                            th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
+                            th:text="'$' + ${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">
                             $0.00
                         </th>
 

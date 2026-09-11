@@ -48,3 +48,8 @@ build/
 # Environment
 .env
 application-secret.properties
+
+# Uploads
+uploads/*
+!uploads/products/
+!uploads/products/.gitkeep

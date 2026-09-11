@@ -80,7 +80,7 @@
                         </td>
 
                         <td class="cart-price"
-                            th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 2)}">
+                            th:text="'$' + ${#numbers.formatDecimal(order.totalPrice, 1, 'COMMA', 2, 'POINT')}">
                             $99.99
                         </td>
 

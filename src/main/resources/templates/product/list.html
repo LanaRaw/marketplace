@@ -101,7 +101,7 @@
                 <a th:href="@{/products/{id}(id=${product.id})}"
                    class="product-image-wrapper">
 
-                    <img th:src="${product.imageUrl}"
+                    <img th:src="@{'/uploads/' + ${product.imagePath}}"
                          class="product-image"
                          alt=""
                          loading="lazy">
@@ -121,7 +121,7 @@
                     </p>
 
                     <div class="product-price"
-                         th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">
+                         th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}">
                         $99.99
                     </div>
 

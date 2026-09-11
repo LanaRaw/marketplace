@@ -15,6 +15,7 @@ import java.math.BigDecimal;
  *
  * Создает пользователей с различными ролями и добавляет тестовые товары.
  * Пароли пользователей шифруются перед сохранением в базу данных.
+ * Картинки товаров должны быть заранее положены в папку uploads/products/.
  */
 @Component
 @RequiredArgsConstructor
@@ -57,6 +58,11 @@ public class DataLoader implements CommandLineRunner {
             buyer.setIsActive(true);
             userRepository.save(buyer);
 
+            // Картинки уже лежат в uploads/products/ (положены вручную)
+            String iphoneImage = "iphone.jpg";
+            String bookImage = "java-book.jpg";
+            String tshirtImage = "tshirt.jpg";
+
             Product product1 = new Product();
             product1.setName("iPhone 15 Pro");
             product1.setDescription("Новейший смартфон от Apple с титановым корпусом");
@@ -64,7 +70,7 @@ public class DataLoader implements CommandLineRunner {
             product1.setQuantityInStock(10);
             product1.setCategory(Category.ELECTRONICS);
             product1.setSeller(seller);
-            product1.setImageUrl("https://via.placeholder.com/300x200?text=iPhone");
+            product1.setImagePath(iphoneImage);
             product1.setIsActive(true);
             productRepository.save(product1);
 
@@ -75,7 +81,7 @@ public class DataLoader implements CommandLineRunner {
             product2.setQuantityInStock(50);
             product2.setCategory(Category.BOOKS);
             product2.setSeller(seller);
-            product2.setImageUrl("https://via.placeholder.com/300x200?text=Java+Book");
+            product2.setImagePath(bookImage);
             product2.setIsActive(true);
             productRepository.save(product2);
 
@@ -86,7 +92,7 @@ public class DataLoader implements CommandLineRunner {
             product3.setQuantityInStock(30);
             product3.setCategory(Category.CLOTHING);
             product3.setSeller(seller);
-            product3.setImageUrl("https://via.placeholder.com/300x200?text=T-Shirt");
+            product3.setImagePath(tshirtImage);
             product3.setIsActive(true);
             productRepository.save(product3);
 

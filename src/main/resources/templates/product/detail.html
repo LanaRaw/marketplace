@@ -13,7 +13,7 @@
 
             <div class="product-detail-image">
 
-                <img th:src="${product.imageUrl}"
+                <img th:src="@{'/uploads/' + ${product.imagePath}}"
                      alt="">
 
             </div>
@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="product-detail-price"
-                     th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">
+                     th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 'COMMA', 2, 'POINT')}">
                     $99.99
                 </div>
 

@@ -2969,3 +2969,19 @@ textarea {
         font-size: 1.5rem;
     }
 }
+
+/* =========================================================
+   CART PRODUCT LINK
+   ========================================================= */
+
+.cart-product-name a {
+    color: var(--text-primary);
+    text-decoration: none;
+
+    transition: color var(--transition);
+}
+
+.cart-product-name a:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}

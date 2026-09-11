@@ -41,8 +41,8 @@ public class Product {
     /**
      * Ссылка на изображение товара.
      */
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "image_path")
+    private String imagePath;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

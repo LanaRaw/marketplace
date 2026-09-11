@@ -40,7 +40,7 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/products/**", "/register", "/login", "/cart/**", "/css/**", "/js/**", "/images/**", "/favicon.ico", "/favicon.png", "/*.png", "/*.ico").permitAll()
+                        .requestMatchers("/", "/products/**", "/register", "/login", "/cart/**", "/css/**", "/js/**", "/images/**", "/uploads/**", "/favicon.ico", "/favicon.png", "/*.png", "/*.ico").permitAll()
                         .requestMatchers("/seller/**").hasAuthority("SELLER")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
