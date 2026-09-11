@@ -68,7 +68,8 @@ src/
 │   ├── java/com/marketplace/
 │   │   ├── config/         # Конфигурации (Security, DataLoader)
 │   │   ├── controller/     # Контроллеры
-│   │   ├── model/          # Сущности (User, Product, Order...)
+│   │   ├── dto/            # DTO-классы
+│   │   ├── model/          # Сущности (User, Product, Order, Cart...)
 │   │   ├── repository/     # Репозитории JPA
 │   │   └── service/        # Сервисы
 │   └── resources/
