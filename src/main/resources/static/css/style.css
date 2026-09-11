@@ -2815,3 +2815,157 @@ textarea {
         max-width: 100%;
     }
 }
+
+/* =========================================================
+   ROLE OPTIONS (REGISTER)
+   ========================================================= */
+
+.role-options {
+    display: flex;
+    gap: 10px;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+
+    flex: 1;
+
+    min-height: 46px;
+
+    padding: 0 14px;
+
+    color: var(--text-secondary);
+    background: rgba(255, 255, 255, 0.035);
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    font-size: 0.86rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+            color var(--transition),
+            background-color var(--transition),
+            border-color var(--transition),
+            box-shadow var(--transition);
+}
+
+.role-option:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.055);
+
+    border-color: var(--border-hover);
+}
+
+.role-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+
+    margin: 0;
+
+    accent-color: var(--accent);
+
+    cursor: pointer;
+}
+
+.role-option:has(input[type="radio"]:checked) {
+    color: var(--text-primary);
+    background: rgba(49, 90, 138, 0.12);
+
+    border-color: rgba(49, 90, 138, 0.55);
+
+    box-shadow:
+            0 0 0 3px rgba(49, 90, 138, 0.08);
+}
+
+.role-option input[type="radio"]:focus-visible {
+    outline: none;
+
+    box-shadow:
+            0 0 0 3px rgba(49, 90, 138, 0.25);
+}
+
+/* 404 */
+
+.error-page {
+    min-height: calc(100vh - 74px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 52px 20px 72px;
+}
+
+.error-card {
+    width: 100%;
+    max-width: 560px;
+    padding: 48px 42px;
+    text-align: center;
+
+    background:
+            linear-gradient(
+                    145deg,
+                    rgba(255, 255, 255, 0.035),
+                    rgba(255, 255, 255, 0.015)
+            );
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 25px 80px rgba(0, 0, 0, 0.25);
+}
+
+.error-code {
+    margin: 0 0 12px;
+
+    color: var(--text-primary);
+    font-family: "Oswald", sans-serif;
+    font-size: clamp(5rem, 15vw, 8rem);
+    font-weight: 500;
+    line-height: 0.9;
+    letter-spacing: -0.03em;
+}
+
+.error-title {
+    margin: 0 0 10px;
+
+    color: var(--text-primary);
+    font-family: "Oswald", sans-serif;
+    font-size: 1.7rem;
+    font-weight: 500;
+}
+
+.error-text {
+    max-width: 400px;
+    margin: 0 auto;
+
+    color: var(--text-muted);
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.error-card .primary-button {
+    margin-top: 26px;
+}
+
+@media (max-width: 520px) {
+
+    .error-page {
+        padding: 32px 20px 52px;
+    }
+
+    .error-card {
+        padding: 38px 22px;
+    }
+
+    .error-code {
+        font-size: 5.5rem;
+    }
+
+    .error-title {
+        font-size: 1.5rem;
+    }
+}

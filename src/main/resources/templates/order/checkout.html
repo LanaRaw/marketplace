@@ -116,7 +116,7 @@
                             </div>
 
                             <strong class="checkout-item-price"
-                                    th:text="'$' + ${item.total}">
+                                    th:text="'$' + ${#numbers.formatDecimal(item.total, 1, 2)}">
                                 $99.99
                             </strong>
 
@@ -130,7 +130,7 @@
                             Итого
                         </span>
 
-                        <strong th:text="'$' + ${total}">
+                        <strong th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
                             $0.00
                         </strong>
 

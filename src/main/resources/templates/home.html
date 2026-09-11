@@ -96,7 +96,7 @@
                     <div class="product-card-footer">
 
                         <strong class="product-price"
-                                th:text="'$' + ${product.price}">
+                                th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">
                             $99.99
                         </strong>
 

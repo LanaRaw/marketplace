@@ -33,6 +33,8 @@ public class HomeController {
         ).getContent();
 
         model.addAttribute("latestProducts", latestProducts);
+
+        model.addAttribute("title", "Главная");
         return "home";
     }
 }

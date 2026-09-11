@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="product-detail-price"
-                     th:text="'$' + ${product.price}">
+                     th:text="'$' + ${#numbers.formatDecimal(product.price, 1, 2)}">
                     $99.99
                 </div>
 

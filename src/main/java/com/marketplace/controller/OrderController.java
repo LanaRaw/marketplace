@@ -43,6 +43,7 @@ public class OrderController {
         model.addAttribute("items", items);
         model.addAttribute("total", cartService.getTotalAmount());
         model.addAttribute("checkoutRequest", new CheckoutRequest());
+        model.addAttribute("title", "Оформление заказа");
 
         return "order/checkout";
     }
@@ -66,6 +67,7 @@ public class OrderController {
         if (bindingResult.hasErrors()) {
             model.addAttribute("items", items);
             model.addAttribute("total", cartService.getTotalAmount());
+            model.addAttribute("title", "Оформление заказа");
             return "order/checkout";
         }
 
@@ -85,6 +87,7 @@ public class OrderController {
     @GetMapping("/confirmation/{id}")
     public String orderConfirmation(@PathVariable Long id, Model model) {
         model.addAttribute("orderId", id);
+        model.addAttribute("title", "Заказ оформлен");
         return "order/confirmation";
     }
 
@@ -98,6 +101,7 @@ public class OrderController {
 
         List<Order> orders = orderService.getOrdersByUser(user);
         model.addAttribute("orders", orders);
+        model.addAttribute("title", "Мои заказы");
 
         return "order/history";
     }

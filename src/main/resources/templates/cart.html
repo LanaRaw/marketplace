@@ -8,6 +8,8 @@
 <div th:fragment="content">
 
     <div class="cart-page">
+        <div th:if="${success}" class="auth-alert auth-alert-success" th:text="${success}"></div>
+        <div th:if="${error}" class="auth-alert auth-alert-error" th:text="${error}"></div>
 
         <header class="cart-header">
             <div class="cart-label">Marketplace</div>
@@ -68,7 +70,7 @@
                         </td>
 
                         <td class="cart-price"
-                            th:text="${'$' + item.price}">
+                            th:text="'$' + ${#numbers.formatDecimal(item.price, 1, 2)}">
                             $99.99
                         </td>
 
@@ -119,7 +121,7 @@
                         </td>
 
                         <td class="cart-price cart-item-total"
-                            th:text="${'$' + item.total}">
+                            th:text="'$' + ${#numbers.formatDecimal(item.total, 1, 2)}">
                             $199.98
                         </td>
 
@@ -150,7 +152,7 @@
                         </th>
 
                         <th class="cart-total"
-                            th:text="${'$' + total}">
+                            th:text="'$' + ${#numbers.formatDecimal(total, 1, 2)}">
                             $0.00
                         </th>
 
@@ -209,6 +211,13 @@
             const cartTotal = document.querySelector('.cart-total');
             const cartBadge = document.querySelector('.cart-badge');
 
+            const formatPrice = function (value) {
+                return '$' + value.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2
+                });
+            };
+
             const updateCartTotal = function () {
 
                 let total = 0;
@@ -231,12 +240,12 @@
                     totalItems += quantity;
 
                     if (itemTotal) {
-                        itemTotal.textContent = '$' + rowTotal.toFixed(2);
+                        itemTotal.textContent = formatPrice(rowTotal);
                     }
                 });
 
                 if (cartTotal) {
-                    cartTotal.textContent = '$' + total.toFixed(2);
+                    cartTotal.textContent = formatPrice(total);
                 }
 
                 if (cartBadge) {

@@ -55,6 +55,7 @@ public class ProductController {
         model.addAttribute("categories", categories);
         model.addAttribute("size", size);
 
+        model.addAttribute("title", "Все товары");
         return "product/list";
     }
 
@@ -76,7 +77,9 @@ public class ProductController {
             return "redirect:/products";
         }
 
-        model.addAttribute("product", productOpt.get());
+        Product product = productOpt.get();
+        model.addAttribute("product", product);
+        model.addAttribute("title", product.getName());
         return "product/detail";
     }
 }
