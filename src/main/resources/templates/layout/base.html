@@ -56,47 +56,67 @@
                 <li class="nav-item"
                     th:if="${#authorization.expression('isAuthenticated()')}">
 
-        <span class="user-greeting">
-            Привет,
-            <span th:text="${#authentication.name}">user</span>
-        </span>
+                    <span class="user-greeting">
+                        Привет,
+                        <span th:text="${#authentication.name}">user</span>
+                    </span>
+
                 </li>
 
-                <li class="nav-item position-relative"
-                    th:if="${#authorization.expression('isAuthenticated()')}">
+                <li class="nav-item position-relative">
 
-                    <a class="nav-link nav-action" th:href="@{/cart}">
+                    <a class="nav-link nav-action"
+                       th:href="@{/cart}">
+
                         Корзина
 
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
                               th:text="${cartService != null ? cartService.getTotalItems() : 0}">
-                0
-            </span>
+                            0
+                        </span>
+
                     </a>
+
                 </li>
 
                 <li class="nav-item"
                     th:if="${#authorization.expression('isAuthenticated()')}">
 
-                    <a class="nav-link" th:href="@{/logout}">
+                    <a class="nav-link"
+                       th:href="@{/orders/history}">
+                        Мои заказы
+                    </a>
+
+                </li>
+
+                <li class="nav-item"
+                    th:if="${#authorization.expression('isAuthenticated()')}">
+
+                    <a class="nav-link"
+                       th:href="@{/logout}">
                         Выход
                     </a>
+
                 </li>
 
                 <li class="nav-item"
                     th:unless="${#authorization.expression('isAuthenticated()')}">
 
-                    <a class="nav-link" th:href="@{/login}">
+                    <a class="nav-link"
+                       th:href="@{/login}">
                         Вход
                     </a>
+
                 </li>
 
                 <li class="nav-item"
                     th:unless="${#authorization.expression('isAuthenticated()')}">
 
-                    <a class="nav-link nav-primary" th:href="@{/register}">
+                    <a class="nav-link nav-primary"
+                       th:href="@{/register}">
                         Регистрация
                     </a>
+
                 </li>
 
             </ul>
@@ -105,7 +125,8 @@
     </div>
 </nav>
 
-<main class="page-content" th:replace="${content}">
+<main class="page-content"
+      th:replace="${content}">
 </main>
 
 <script
@@ -118,6 +139,7 @@
             .then(response => response.json())
             .then(data => {
                 const badge = document.querySelector('.cart-badge');
+
                 if (badge) {
                     badge.textContent = data;
                 }

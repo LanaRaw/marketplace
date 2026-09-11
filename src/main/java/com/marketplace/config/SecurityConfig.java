@@ -26,6 +26,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final CustomUserDetailsService userDetailsService;
+    private final LoginSuccessHandler loginSuccessHandler;
 
     /**
      * Настраивает цепочку фильтров безопасности Spring Security.
@@ -39,14 +40,14 @@ public class SecurityConfig {
         http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/products/**", "/register", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/products/**", "/register", "/login", "/cart/**", "/css/**", "/js/**", "/images/**").permitAll()
                         .requestMatchers("/seller/**").hasAuthority("SELLER")
                         .requestMatchers("/admin/**").hasAuthority("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(loginSuccessHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout

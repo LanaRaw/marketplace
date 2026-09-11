@@ -1,10 +1,18 @@
 package com.marketplace.service;
 
 import com.marketplace.dto.CartItem;
+import com.marketplace.model.Cart;
+import com.marketplace.model.CartItemEntity;
 import com.marketplace.model.Product;
+import com.marketplace.model.User;
+import com.marketplace.repository.CartRepository;
 import com.marketplace.repository.ProductRepository;
+import com.marketplace.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.annotation.SessionScope;
 
 import java.util.ArrayList;
@@ -13,6 +21,7 @@ import java.util.Optional;
 
 /**
  * Управляет товарами в корзине пользователя.
+ * Для авторизованных пользователей корзина сохраняется в БД.
  */
 @Service
 @SessionScope
@@ -20,6 +29,8 @@ import java.util.Optional;
 public class CartService {
 
     private final ProductRepository productRepository;
+    private final CartRepository cartRepository;
+    private final UserRepository userRepository;
 
     private List<CartItem> items = new ArrayList<>();
 
@@ -29,6 +40,7 @@ public class CartService {
      * @param productId идентификатор товара
      * @param quantity количество товара
      */
+    @Transactional
     public void addItem(Long productId, Integer quantity) {
         Optional<CartItem> existingItem = items.stream()
                 .filter(item -> item.getProductId().equals(productId))
@@ -49,6 +61,8 @@ public class CartService {
 
             items.add(newItem);
         }
+
+        saveToDatabase();
     }
 
     /**
@@ -56,8 +70,10 @@ public class CartService {
      *
      * @param productId идентификатор товара
      */
+    @Transactional
     public void removeItem(Long productId) {
         items.removeIf(item -> item.getProductId().equals(productId));
+        saveToDatabase();
     }
 
     /**
@@ -66,6 +82,7 @@ public class CartService {
      * @param productId идентификатор товара
      * @param quantity новое количество
      */
+    @Transactional
     public void updateQuantity(Long productId, Integer quantity) {
         boolean found = false;
 
@@ -84,6 +101,8 @@ public class CartService {
         if (!found) {
             System.out.println("⚠️ Товар с id " + productId + " не найден в корзине");
         }
+
+        saveToDatabase();
     }
 
     /**
@@ -98,8 +117,14 @@ public class CartService {
     /**
      * Очищает корзину.
      */
+    @Transactional
     public void clearCart() {
         items.clear();
+
+        User user = getCurrentUser();
+        if (user != null) {
+            cartRepository.findByUser(user).ifPresent(cartRepository::delete);
+        }
     }
 
     /**
@@ -122,5 +147,79 @@ public class CartService {
         return items.stream()
                 .mapToInt(CartItem::getQuantity)
                 .sum();
+    }
+
+    /**
+     * Загружает корзину из БД для текущего пользователя.
+     * Вызывается после успешного логина.
+     */
+    @Transactional
+    public void loadFromDatabase() {
+        User user = getCurrentUser();
+        if (user == null) {
+            return;
+        }
+
+        Optional<Cart> cartOpt = cartRepository.findByUser(user);
+        if (cartOpt.isEmpty()) {
+            return;
+        }
+
+        items.clear();
+
+        for (CartItemEntity entity : cartOpt.get().getItems()) {
+            CartItem item = new CartItem();
+            item.setProductId(entity.getProduct().getId());
+            item.setProductName(entity.getProduct().getName());
+            item.setQuantity(entity.getQuantity());
+            item.setPrice(entity.getProduct().getPrice().doubleValue());
+
+            items.add(item);
+        }
+    }
+
+    /**
+     * Сохраняет текущую корзину в БД.
+     */
+    @Transactional
+    protected void saveToDatabase() {
+        User user = getCurrentUser();
+        if (user == null) {
+            return;
+        }
+
+        Cart cart = cartRepository.findByUser(user).orElseGet(() -> {
+            Cart newCart = new Cart();
+            newCart.setUser(user);
+            return cartRepository.save(newCart);
+        });
+
+        cart.getItems().clear();
+
+        for (CartItem item : items) {
+            Product product = productRepository.findById(item.getProductId())
+                    .orElseThrow(() -> new RuntimeException("Товар не найден"));
+
+            CartItemEntity entity = new CartItemEntity();
+            entity.setCart(cart);
+            entity.setProduct(product);
+            entity.setQuantity(item.getQuantity());
+
+            cart.getItems().add(entity);
+        }
+
+        cartRepository.save(cart);
+    }
+
+    /**
+     * Возвращает текущего авторизованного пользователя или null.
+     */
+    private User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth == null || !auth.isAuthenticated() || "anonymousUser".equals(auth.getName())) {
+            return null;
+        }
+
+        return userRepository.findByEmail(auth.getName()).orElse(null);
     }
 }

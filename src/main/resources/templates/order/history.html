@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <div class="cart-page">
+
+        <header class="cart-header">
+            <div class="cart-label">Marketplace</div>
+
+            <h1 class="cart-title">
+                Мои заказы
+            </h1>
+        </header>
+
+        <div th:if="${orders.isEmpty()}"
+             class="empty-cart">
+
+            <div class="empty-cart-icon">
+                📦
+            </div>
+
+            <h2 class="empty-cart-title">
+                Заказов пока нет
+            </h2>
+
+            <p class="empty-cart-text">
+                После оформления заказа он появится здесь.
+            </p>
+
+            <a th:href="@{/products}"
+               class="primary-button">
+                Перейти к товарам
+            </a>
+
+        </div>
+
+        <div th:unless="${orders.isEmpty()}"
+             class="cart-content">
+
+            <div class="cart-table-wrapper">
+
+                <table class="table cart-table">
+
+                    <thead>
+                    <tr>
+                        <th>№</th>
+                        <th>Дата</th>
+                        <th>Статус</th>
+                        <th>Сумма</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+
+                    <tr th:each="order : ${orders}"
+                        class="cart-row">
+
+                        <td class="cart-product-name"
+                            th:text="${order.id}">
+                            1
+                        </td>
+
+                        <td class="cart-price"
+                            th:text="${#temporals.format(order.orderDate, 'dd.MM.yyyy HH:mm')}">
+                            01.01.2026 12:00
+                        </td>
+
+                        <td>
+
+                            <span class="order-status-badge"
+                                  th:text="${order.status}">
+                                NEW
+                            </span>
+
+                        </td>
+
+                        <td class="cart-price"
+                            th:text="${'$' + order.totalPrice}">
+                            $99.99
+                        </td>
+
+                    </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            <div class="cart-actions">
+
+                <div class="cart-actions-left">
+
+                    <a th:href="@{/products}"
+                       class="secondary-button">
+                        Продолжить покупки
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <div class="auth-page">
+
+        <div class="auth-card checkout-card">
+
+            <div class="auth-header">
+
+                <span class="auth-label">
+                    Checkout
+                </span>
+
+                <h1 class="auth-title">
+                    Оформление заказа
+                </h1>
+
+                <p class="auth-subtitle">
+                    Заполните данные доставки, чтобы подтвердить заказ.
+                </p>
+
+            </div>
+
+            <form th:action="@{/orders/checkout}"
+                  th:object="${checkoutRequest}"
+                  method="post"
+                  class="auth-form">
+
+                <div class="auth-field">
+
+                    <label for="deliveryAddress"
+                           class="auth-label-text">
+                        Адрес доставки *
+                    </label>
+
+                    <input type="text"
+                           th:field="*{deliveryAddress}"
+                           class="form-control auth-input"
+                           id="deliveryAddress">
+
+                    <div class="auth-field-error"
+                         th:if="${#fields.hasErrors('deliveryAddress')}"
+                         th:errors="*{deliveryAddress}">
+                    </div>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="phoneNumber"
+                           class="auth-label-text">
+                        Телефон *
+                    </label>
+
+                    <input type="text"
+                           th:field="*{phoneNumber}"
+                           class="form-control auth-input"
+                           id="phoneNumber">
+
+                    <div class="auth-field-error"
+                         th:if="${#fields.hasErrors('phoneNumber')}"
+                         th:errors="*{phoneNumber}">
+                    </div>
+
+                </div>
+
+                <div class="auth-field">
+
+                    <label for="comment"
+                           class="auth-label-text">
+                        Комментарий
+                    </label>
+
+                    <textarea th:field="*{comment}"
+                              class="form-control auth-input auth-textarea"
+                              id="comment"
+                              rows="4"></textarea>
+
+                </div>
+
+                <div class="checkout-summary">
+
+                    <div class="checkout-summary-header">
+                        <span class="auth-label">
+                            Order
+                        </span>
+
+                        <h2 class="checkout-summary-title">
+                            Ваш заказ
+                        </h2>
+                    </div>
+
+                    <div class="checkout-items">
+
+                        <div class="checkout-item"
+                             th:each="item : ${items}">
+
+                            <div class="checkout-item-info">
+
+                                <span class="checkout-item-name"
+                                      th:text="${item.productName}">
+                                    Товар
+                                </span>
+
+                                <span class="checkout-item-quantity"
+                                      th:text="'x ' + ${item.quantity}">
+                                    x 1
+                                </span>
+
+                            </div>
+
+                            <strong class="checkout-item-price"
+                                    th:text="'$' + ${item.total}">
+                                $99.99
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    <div class="checkout-total">
+
+                        <span>
+                            Итого
+                        </span>
+
+                        <strong th:text="'$' + ${total}">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <div class="checkout-actions">
+
+                    <button type="submit"
+                            class="auth-submit">
+                        Подтвердить заказ
+                    </button>
+
+                    <a th:href="@{/cart}"
+                       class="checkout-back">
+                        ← Вернуться в корзину
+                    </a>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ru"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{layout/base :: layout(~{::content})}">
+
+<body>
+
+<div th:fragment="content">
+
+    <div class="auth-page">
+
+        <div class="auth-card confirmation-card">
+
+            <div class="confirmation-icon">
+                ✓
+            </div>
+
+            <div class="auth-header confirmation-header">
+
+                <span class="auth-label">
+                    Order confirmed
+                </span>
+
+                <h1 class="auth-title">
+                    Спасибо за заказ!
+                </h1>
+
+                <p class="auth-subtitle">
+                    Ваш заказ успешно оформлен. Мы свяжемся с вами в ближайшее время.
+                </p>
+
+            </div>
+
+            <div class="confirmation-order">
+
+                <span class="confirmation-order-label">
+                    Номер заказа
+                </span>
+
+                <strong class="confirmation-order-id"
+                        th:text="${orderId}">
+                    12345
+                </strong>
+
+            </div>
+
+            <div class="confirmation-actions">
+
+                <a th:href="@{/orders/history}"
+                   class="auth-submit confirmation-primary">
+                    Мои заказы
+                </a>
+
+                <a th:href="@{/products}"
+                   class="confirmation-back">
+                    Продолжить покупки
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+</html>
